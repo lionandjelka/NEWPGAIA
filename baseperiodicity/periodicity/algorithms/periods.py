@@ -25,7 +25,7 @@ def loadfsdf(path_source):
 def load_fsgp():
     global fs_gp, fs_df
     # groupby forcedsource table by objectid
-    fs_gp = fs_df.groupby('object_id')
+    fs_gp = fs_df.groupby('source_id')
     fs_gp.columns= fs_gp.columns.str.replace("time", "mjd")
     fs_gp.columns = fs_gp.columns.str.replace("band", "filter")
     fs_gp.columns = fs_gp.columns.str.replace("flux", "psMag")
