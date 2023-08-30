@@ -23,7 +23,7 @@ def loadfsdf(path_source):
     fs_df.columns= fs_df.columns.str.replace("time", "mjd")
     fs_df.columns = fs_df.columns.str.replace("band", "filter")
     fs_df.columns = fs_df.columns.str.replace("flux", "psMag")
-    fs_df['filter'] = fs_df['filter'].replace(['GP'], '1')
+    fs_df['filter'] = fs_df['filter'].replace(['G'], '1')
     fs_df['filter'] = fs_df['filter'].replace(['BP'], '2')
     fs_df['filter'] = fs_df['filter'].replace(['RP'], '3')
     fs_df['filter'] = fs_df['filter'].replace(['RP'], '4')
