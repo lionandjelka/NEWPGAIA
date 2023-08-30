@@ -20,19 +20,19 @@ def loadfsdf(path_source):
     global fs_df
     # Loading will take some time ...
     fs_df = pd.read_parquet(path_source, engine='fastparquet')
+    fs_df.columns= fs_df.columns.str.replace("time", "mjd")
+    fs_df.columns = fs_df.columns.str.replace("band", "filter")
+    fs_df.columns = fs_df.columns.str.replace("flux", "psMag")
+    fs_df['filter'] = fs_df['filter'].replace(['GP'], '1')
+    fs_df['filter'] = fs_df['filter'].replace(['BP'], '2')
+    fs_df['filter'] = fs_df['filter'].replace(['RP'], '3')
+    fs_df['filter'] = fs_df['filter'].replace(['RP'], '4')
     return fs_df
 
 def load_fsgp():
     global fs_gp, fs_df
     # groupby forcedsource table by objectid
     fs_gp = fs_df.groupby('source_id')
-    fs_gp.columns= fs_gp.columns.str.replace("time", "mjd")
-    fs_gp.columns = fs_gp.columns.str.replace("band", "filter")
-    fs_gp.columns = fs_gp.columns.str.replace("flux", "psMag")
-    fs_gp['filter'] = fs_gp['filter'].replace(['GP'], '1')
-    fs_gp['filter'] = fs_gp['filter'].replace(['BP'], '2')
-    fs_gp['filter'] = fs_gp['filter'].replace(['RP'], '3')
-    fs_gp['filter'] = fs_gp['filter'].replace(['RP'], '4')
     return fs_gp
 
 def load_objectdf(path_obj):
