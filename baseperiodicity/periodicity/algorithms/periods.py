@@ -19,18 +19,25 @@ td_objects = None
 def loadfsdf(path_source):
     global fs_df
     # Loading will take some time ...
-    fs_df = pd.read_parquet(path_source)
+    fs_df = pd.read_parquet(path_source, engine='fastparquet')
     return fs_df
 
 def load_fsgp():
     global fs_gp, fs_df
     # groupby forcedsource table by objectid
-    fs_gp = fs_df.groupby('objectId')
+    fs_gp = fs_df.groupby('object_id')
+    fs_gp.columns= fs_gp.columns.str.replace("time", "mjd")
+    fs_gp.columns = fs_gp.columns.str.replace("band", "filter")
+    fs_gp.columns = fs_gp.columns.str.replace("flux", "psMag")
+    fs_gp['filter'] = fs_gp['filter'].replace(['GP'], '1')
+    fs_gp['filter'] = fs_gp['filter'].replace(['BP'], '2')
+    fs_gp['filter'] = fs_gp['filter'].replace(['RP'], '3')
+    fs_gp['filter'] = fs_gp['filter'].replace(['RP'], '4')
     return fs_gp
 
 def load_objectdf(path_obj):
     global object_df,fs_df, td_objects
-    object_df=pd.read_parquet(path_obj)
+    object_df=pd.read_parquet(path_obj, engine='fastparquet')
     # select the objects that have time domain data
     lc_cols = [col for col in object_df.columns if 'Periodic' in col]
     td_objects = object_df.dropna(subset=lc_cols, how='all').copy()
@@ -112,7 +119,6 @@ def get_lc22(set1):
     d1 = demo_lc[(demo_lc['filter'] == 2) ].sort_values(by=['mjd']).dropna()
     d2 = demo_lc[(demo_lc['filter'] == 3) ].sort_values(by=['mjd']).dropna()
     d3 = demo_lc[(demo_lc['filter'] == 4) ].sort_values(by=['mjd']).dropna()
-  #  d4 = demo_lc[(demo_lc['filter'] == 5) ].sort_values(by=['mjd'])
     tt00 = d0['mjd'].to_numpy()
     yy00 = d0['psMag'].to_numpy()
     tt11 = d1['mjd'].to_numpy()
@@ -121,8 +127,6 @@ def get_lc22(set1):
     yy22 = d2['psMag'].to_numpy()
     tt33 = d3['mjd'].to_numpy()
     yy33 = d3['psMag'].to_numpy()
-   # tt4 = d4['mjd'].to_numpy()
-   # yy4 = d4['psMag'].to_numpy()
     tt0,yy0=outliers(tt00,yy00)
     print('ppp')
     tt1,yy1=outliers(tt11,yy11)
@@ -133,7 +137,6 @@ def get_lc22(set1):
     sampling1 = np.mean(np.diff(tt1))
     sampling2 = np.mean(np.diff(tt2))
     sampling3 = np.mean(np.diff(tt3))
-  #  sampling4 = np.mean(np.diff(tt4))
     return tt0, yy0, tt1, yy1, tt2, yy2, tt3, yy3, sampling0, sampling1, sampling2, sampling3
 
 
