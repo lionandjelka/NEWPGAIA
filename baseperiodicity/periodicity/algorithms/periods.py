@@ -127,7 +127,6 @@ def get_lc22(set1):
     yy22 = d2['psMag'].to_numpy()
     tt33 = d3['mjd'].to_numpy()
     yy33 = d3['psMag'].to_numpy()
-    tt0,yy0=outliers(tt00,yy00)
     print('ppp')
     sampling0 = np.mean(np.diff(tt00))
     sampling1 = np.mean(np.diff(tt11))
