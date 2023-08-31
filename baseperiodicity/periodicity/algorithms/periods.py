@@ -129,14 +129,10 @@ def get_lc22(set1):
     yy33 = d3['psMag'].to_numpy()
     tt0,yy0=outliers(tt00,yy00)
     print('ppp')
-    tt1,yy1=outliers(tt11,yy11)
-    print('p1')
-    tt2,yy2=outliers(tt22,yy22)
-    tt3,yy3=outliers(tt33,yy33)
-    sampling0 = np.mean(np.diff(tt0))
-    sampling1 = np.mean(np.diff(tt1))
-    sampling2 = np.mean(np.diff(tt2))
-    sampling3 = np.mean(np.diff(tt3))
+    sampling0 = np.mean(np.diff(tt00))
+    sampling1 = np.mean(np.diff(tt11))
+    sampling2 = np.mean(np.diff(tt22))
+    sampling3 = np.mean(np.diff(tt33))
     return tt0, yy0, tt1, yy1, tt2, yy2, tt3, yy3, sampling0, sampling1, sampling2, sampling3
 
 
