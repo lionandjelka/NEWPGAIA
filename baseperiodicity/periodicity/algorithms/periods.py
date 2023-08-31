@@ -129,7 +129,7 @@ def get_lc22(set1):
     sampling1 = np.mean(np.diff(tt11))
     sampling2 = np.mean(np.diff(tt22))
     sampling3 = np.mean(np.diff(tt33))
-    return tt0, yy0, tt1, yy1, tt2, yy2, tt3, yy3, sampling0, sampling1, sampling2, sampling3
+    return tt00, yy00, tt11, yy11, tt22, yy22, tt33, yy33, sampling0, sampling1, sampling2, sampling3
 
 
 def same_periods(r_periods0,r_periods1,up0,low0, up1,low1,peaks0,hh0,tt0,yy0, peaks1, hh1,tt1,yy1):
