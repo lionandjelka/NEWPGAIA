@@ -26,7 +26,6 @@ def loadfsdf(path_source):
     fs_df['filter'] = fs_df['filter'].replace(['G'],  1)
     fs_df['filter'] = fs_df['filter'].replace(['BP'], 2)
     fs_df['filter'] = fs_df['filter'].replace(['RP'], 3)
-    fs_df['filter'] = fs_df['filter'].replace(['RP'], 4)
     return fs_df
 
 def load_fsgp():
@@ -118,7 +117,6 @@ def get_lc22(set1):
     d0 = demo_lc[(demo_lc['filter'] == 1) ].sort_values(by=['mjd']).dropna()
     d1 = demo_lc[(demo_lc['filter'] == 2) ].sort_values(by=['mjd']).dropna()
     d2 = demo_lc[(demo_lc['filter'] == 3) ].sort_values(by=['mjd']).dropna()
-    d3 = demo_lc[(demo_lc['filter'] == 4) ].sort_values(by=['mjd']).dropna()
     tt00 = d0['mjd'].to_numpy()
     yy00 = d0['psMag'].to_numpy()
     tt11 = d1['mjd'].to_numpy()
@@ -127,7 +125,6 @@ def get_lc22(set1):
     yy22 = d2['psMag'].to_numpy()
     tt33 = d3['mjd'].to_numpy()
     yy33 = d3['psMag'].to_numpy()
-    print('ppp')
     sampling0 = np.mean(np.diff(tt00))
     sampling1 = np.mean(np.diff(tt11))
     sampling2 = np.mean(np.diff(tt22))
