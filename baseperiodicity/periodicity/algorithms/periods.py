@@ -20,7 +20,6 @@ def loadfsdf(path_source):
     # Loading will take some time ...
     fs_df = pd.read_parquet(path_source, engine='fastparquet')
     fs_df.columns= fs_df.columns.str.replace("time", "mjd")
-    fs_df.columns= fs_df.columns.str.replace("time", "mjd")
     fs_df.columns = fs_df.columns.str.replace("band", "filter")
     fs_df.columns = fs_df.columns.str.replace("flux", "psMag")
     fs_df['filter'] = fs_df['filter'].replace(['G'],  1)
@@ -114,9 +113,9 @@ def outliers(time,flux):
 def get_lc22(set1):
     global fs_gp
     demo_lc = fs_gp.get_group(set1)
-    d0 = demo_lc[(demo_lc['filter'] == 1) ].sort_values(by=['mjd']).dropna()
-    d1 = demo_lc[(demo_lc['filter'] == 2) ].sort_values(by=['mjd']).dropna()
-    d2 = demo_lc[(demo_lc['filter'] == 3) ].sort_values(by=['mjd']).dropna()
+    d0 = demo_lc[(demo_lc['filter'] == 1) ].sort_values(by=['mjd'])#.dropna()
+    d1 = demo_lc[(demo_lc['filter'] == 2) ].sort_values(by=['mjd'])#.dropna()
+    d2 = demo_lc[(demo_lc['filter'] == 3) ].sort_values(by=['mjd'])#.dropna()
     tt00 = d0['mjd'].to_numpy()
     yy00 = d0['psMag'].to_numpy()
     tt11 = d1['mjd'].to_numpy()
