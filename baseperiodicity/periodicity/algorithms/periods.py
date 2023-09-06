@@ -110,7 +110,7 @@ def outliers(time,flux):
    cleaned_mag=clean_flux
   return cleaned_time, cleaned_mag#,clean_err
 
-def get_lc22(set1):
+def get_lc22x(set1):
     global fs_gp
     demo_lc = fs_gp.get_group(set1)
     d0 = demo_lc[(demo_lc['filter'] == 1) ].sort_values(by=['mjd'])#.dropna()
@@ -129,8 +129,63 @@ def get_lc22(set1):
     sampling2 = np.mean(np.diff(tt22))
     sampling3 = np.mean(np.diff(tt33))
     return tt00, yy00, tt11, yy11, tt22, yy22, tt33, yy33, sampling0, sampling1, sampling2, sampling3
+def aggregate_times_and_fluxes(times, fluxes, threshold):
+    if not all(len(lst) == len(times) for lst in [fluxes]):
+        raise ValueError("Times, fluxes, and errors should have the same length.")
 
+    sorted_indices = np.argsort(times)
+    times = np.array(times)[sorted_indices]
+    fluxes = np.array(fluxes)[sorted_indices]
+    dff=np.min(np.diff(times))
+    aggregated_times = []
+    aggregated_fluxes = []
 
+    i = 0
+    while i < len(times):
+        current_time_sum = times[i]
+        current_flux_sum = fluxes[i] 
+
+        n_aggregated = 1  # At least one time instance will be aggregated (itself)
+
+        # Look forward to see how many time instances can be aggregated
+        j = i + 1
+        while j < len(times) and (times[j] - times[j-1]) < threshold*dff:
+            current_flux_sum += fluxes[j] 
+            current_time_sum += times[j]
+            n_aggregated += 1
+            j += 1
+
+        if n_aggregated > 5:
+            aggregated_times.append(current_time_sum / n_aggregated)
+            aggregated_fluxes.append(current_flux_sum /  n_aggregated)  # Weighted average of the fluxes
+            i = j
+        else:
+            aggregated_times.append(times[i])
+            aggregated_fluxes.append(fluxes[i])
+            i += 1
+
+    return aggregated_times, aggregated_fluxes
+
+def process_data(data, threshold=5):
+    times = data['mjd'].to_numpy()
+    fluxes = data['mag'].to_numpy()
+    return aggregate_times_and_fluxes(times, fluxes, threshold)
+
+def get_lc22(set1):
+    global fs_gp
+    demo_lc = fs_gp.get_group(set1)
+    
+    tt00, yy00 = process_data(demo_lc[(demo_lc['filter'] == 1)].sort_values(by=['mjd']))
+    tt11, yy11 = process_data(demo_lc[(demo_lc['filter'] == 2)].sort_values(by=['mjd']))
+    tt22, yy22 = process_data(demo_lc[(demo_lc['filter'] == 3)].sort_values(by=['mjd']))
+    tt33, yy33 = process_data(demo_lc[(demo_lc['filter'] == 3)].sort_values(by=['mjd']))  # Repeated, possibly an oversight
+    
+    sampling0 = np.mean(np.diff(tt00))
+    sampling1 = np.mean(np.diff(tt11))
+    sampling2 = np.mean(np.diff(tt22))
+    sampling3 = np.mean(np.diff(tt33))
+    
+    return tt00, yy00, tt11, yy11, tt22, yy22, tt33, yy33, sampling0, sampling1, sampling2, sampling3
 def same_periods(r_periods0,r_periods1,up0,low0, up1,low1,peaks0,hh0,tt0,yy0, peaks1, hh1,tt1,yy1):
     r_periods0=np.array(r_periods0)
     r_periods1=np.array(r_periods1)
