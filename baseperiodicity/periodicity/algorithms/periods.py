@@ -101,7 +101,7 @@ def outliers(time,flux):
 
     # Find the index of the outlier point
   outlier_index = np.argmax(differences) + 1
-  if np.max(differences)>0.3:
+  if np.max(differences)>2.0:
     # Remove the outlier point
    cleaned_mag = np.delete(clean_flux, outlier_index)
    cleaned_time=np.delete(clean_time, outlier_index)
@@ -163,8 +163,8 @@ def aggregate_times_and_fluxes(times, fluxes, threshold):
             aggregated_times.append(times[i])
             aggregated_fluxes.append(fluxes[i])
             i += 1
-
-    return aggregated_times, aggregated_fluxes
+        ct,cf=outliers(aggregated_times, aggregated_fluxes)
+    return ct,cf
 
 def process_data(data, threshold=5):
     times = data['mjd'].to_numpy()
