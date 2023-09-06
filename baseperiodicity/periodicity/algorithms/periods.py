@@ -163,7 +163,9 @@ def aggregate_times_and_fluxes(times, fluxes, threshold):
             aggregated_times.append(times[i])
             aggregated_fluxes.append(fluxes[i])
             i += 1
-        ct,cf=outliers(aggregated_times, aggregated_fluxes)
+        aggt=np.asarray(aggregated_times)
+        aggf=np.asarray(aggregated_fluxes)
+        ct,cf=outliers(aggt, aggf)
     return ct,cf
 
 def process_data(data, threshold=5):
