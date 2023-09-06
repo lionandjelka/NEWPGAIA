@@ -101,7 +101,7 @@ def outliers(time,flux):
 
     # Find the index of the outlier point
   outlier_index = np.argmax(differences) + 1
-  if np.max(differences)>2.0:
+  if np.max(differences)>3.0:
     # Remove the outlier point
    cleaned_mag = np.delete(clean_flux, outlier_index)
    cleaned_time=np.delete(clean_time, outlier_index)
@@ -165,13 +165,14 @@ def aggregate_times_and_fluxes(times, fluxes, threshold):
             i += 1
         aggt=np.asarray(aggregated_times)
         aggf=np.asarray(aggregated_fluxes)
-        ct,cf=outliers(aggt, aggf)
-    return ct,cf
+       # ct,cf=outliers(aggt, aggf)
+    return aggt,aggf
 
-def process_data(data, threshold=5):
+def process_data(data, threshold1=5):
     times = data['mjd'].to_numpy()
     fluxes = data['mag'].to_numpy()
-    return aggregate_times_and_fluxes(times, fluxes, threshold)
+    ct,cf=aggregate_times_and_fluxes(times, fluxes, threshold1)
+    return outliers(ct,cf)
 
 def get_lc22(set1):
     global fs_gp
@@ -181,7 +182,7 @@ def get_lc22(set1):
     tt11, yy11 = process_data(demo_lc[(demo_lc['filter'] == 2)].sort_values(by=['mjd']))
     tt22, yy22 = process_data(demo_lc[(demo_lc['filter'] == 3)].sort_values(by=['mjd']))
     tt33, yy33 = process_data(demo_lc[(demo_lc['filter'] == 3)].sort_values(by=['mjd']))  # Repeated, possibly an oversight
-    
+    print('p')
     sampling0 = np.mean(np.diff(tt00))
     sampling1 = np.mean(np.diff(tt11))
     sampling2 = np.mean(np.diff(tt22))
