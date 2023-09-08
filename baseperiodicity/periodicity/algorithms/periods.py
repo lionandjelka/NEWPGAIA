@@ -555,7 +555,10 @@ def signif_johnoson(numlc, peak, idx_peaks, yax, tt, yy, ntau,ngrid, f = 2, peak
         hhx=np.rot90(corr1x).T/corr1x.max()
         hh1x=np.rot90(hhx.T)
         hh1xarr=np.abs(hh1x).sum(1)/np.abs(hh1x).sum(1).max()
-
+        if idxrep >= len(hh1xarr):
+           print(f"Index {idxrep} out of bounds for hh1xarr with size {len(hh1xarr)}")
+    # Handle the error, e.g., by skipping this iteration or stopping the loop
+           continue  # or return, break, etc.
         bins.append(yax[idxrep])
         if ((yax[idxrep]/hh1xarr[idxrep])>1.):
             count=count+1.
