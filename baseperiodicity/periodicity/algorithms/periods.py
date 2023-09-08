@@ -263,13 +263,13 @@ def process1(set1):
     global fs_gp
     det_periods=[]
     tt0,yy0, tt1,yy1,tt2,yy2,tt3,yy3,sampling0,sampling1,sampling2,sampling3=get_lc22(set1)
-    wwz_matrx0,  corr0, extent0 = hybrid2d(tt0, yy0, 80, 800, minfq=2000., maxfq=10.)
+    wwz_matrx0,  corr0, extent0 = hybrid2d(tt0, yy0, 80, 800, minfq=500., maxfq=10.)
     peaks0,hh0,r_periods0, up0, low0 = periods (int(set1), corr0, 800, plot=False)
-    wwzmatrx1, corr1, extent1 = hybrid2d(tt1,yy1, 80, 800, minfq=2000., maxfq=10.)
+    wwzmatrx1, corr1, extent1 = hybrid2d(tt1,yy1, 80, 800, minfq=500., maxfq=10.)
     peaks1,hh1,r_periods1, up1, low1 = periods (int(set1), corr1, 800, plot=False)
-    wwz_matrx2,  corr2, extent2 = hybrid2d(tt2, yy2, 80, 800, minfq=2000., maxfq=10.)
+    wwz_matrx2,  corr2, extent2 = hybrid2d(tt2, yy2, 80, 800, minfq=500., maxfq=10.)
     peaks2,hh2,r_periods2, up2, low2 = periods (int(set1), corr2, 800, plot=False)
-    wwzmatrx3, corr3, extent3 = hybrid2d(tt3,yy3, 80, 800, minfq=2000., maxfq=10.)
+    wwzmatrx3, corr3, extent3 = hybrid2d(tt3,yy3, 80, 800, minfq=500., maxfq=10.)
     peaks3,hh3,r_periods3, up3, low3 = periods (int(set1), corr3, 800, plot=False)
     r_periods01, u01,low01,sig01=same_periods(r_periods0,r_periods1,up0,low0,up1,low1,peaks0,hh0,tt0,yy0, peaks1,hh1,tt1,yy1)
     print(set1)
